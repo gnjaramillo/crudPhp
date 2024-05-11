@@ -17,7 +17,7 @@ class ClaseDAO{
         
     }   
 
-    function TraerProducto(){
+    function traerProductosBD(){
         $conexion = new Conexion('localhost','root', 'root','prueba');
 
         try {
@@ -77,9 +77,25 @@ class ClaseDAO{
         } catch (PDOException $e) {
             echo 'Falla en la conexión: ' . $e->getMessage();
         }        
+        
     }
 
 
+    function traerProductos($id){
+        $conexion = new Conexion('localhost','root', 'root','prueba');
+
+        try {
+            $conn = $conexion-> Conectar();
+            // echo 'Conexión exitosa'; 
+            $stmt=$conn->query('SELECT * FROM productos');
+            $rows = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $rows;        
+            
+        
+        } catch (PDOException $e) {
+            echo 'Falla en la conexión: ' . $e->getMessage();
+        }        
+    }
 
 }
 

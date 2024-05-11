@@ -4,7 +4,7 @@
 include('../models/claseDAO.php');
 
 $clase = new ClaseDAO();
-$productos = $clase->TraerProducto();
+$productos = $clase->traerProductosBD();
 
 echo json_encode($productos);
 
