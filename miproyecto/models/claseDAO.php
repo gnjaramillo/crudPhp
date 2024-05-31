@@ -69,6 +69,34 @@ obtenidos de la consulta. pero podría tener cualquier otro nombre descriptivo q
     }
 
 
+
+
+/*     function agregarProducto($nombre, $descripcion){
+    $conexion = new Conexion('localhost', 'root', 'root', 'prueba');
+
+    try {
+        $conn = $conexion->Conectar(); 
+        $query = "INSERT INTO productos (nombre, descripcion) VALUES (:nombre, :descripcion)";
+        $stmt = $conn->prepare($query);
+        $stmt->bindParam(':nombre', $nombre);
+        $stmt->bindParam(':descripcion', $descripcion);
+        $stmt->execute();
+
+        // Obtener el ID del último producto insertado
+        $id = $conn->lastInsertId();
+
+        // Devolver los detalles del nuevo producto
+        return [
+            "id" => $id,
+            "nombre" => $nombre,
+            "descripcion" => $descripcion
+        ];
+    } catch (PDOException $e) {
+        echo 'Falla en la conexión: ' . $e->getMessage();
+    }
+}
+ */
+
    
 
 
@@ -91,7 +119,19 @@ obtenidos de la consulta. pero podría tener cualquier otro nombre descriptivo q
         }        
     }
 
-    
+    function traerProductos($id) {
+        $conexion = new Conexion('localhost', 'root', 'root', 'prueba');
+        try {
+            $conn = $conexion->Conectar();
+            $query = "SELECT * FROM productos WHERE id=:id";
+            $stmt = $conn->prepare($query);
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo 'Falla en la conexión: ' . $e->getMessage();
+        }
+    }   
     
 
        function actualizarProducto($id, $nombre, $descripcion){

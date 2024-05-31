@@ -1,7 +1,7 @@
 alert('hola'); // para verificar si esta activo el js
 
 function cargarDatos() {
-    fetch('./controllers/traerProductosBDController.php')
+    fetch('../controllers/traerProductosBDController.php')
         .then(response => response.json())
         .then(data => {
             const tablaDatos = document.getElementById('tablaDatos');
@@ -42,7 +42,7 @@ function agregarProducto() {
     const formData = new FormData(document.getElementById('formAgregarProducto'));
 
     // Realizar una solicitud fetch para enviar los datos al controlador
-    fetch('./controllers/agregarProductosController.php', {
+    fetch('../controllers/agregarProductosController.php', {
         method: 'POST',
         body: formData
     })
@@ -71,7 +71,7 @@ function eliminarProducto(id) {
         cancelButtonText: 'Cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`./controllers/eliminarProductosController.php?id=${id}`)
+            fetch(`../controllers/eliminarProductosController.php?id=${id}`)
                 .then(response => response.text())
                 .then(data => {
                     if (data.trim() === "producto eliminado") {
@@ -92,23 +92,31 @@ function eliminarProducto(id) {
     });
 }
 
+
+
 function traerProductos(id) {
-    fetch(`./controllers/traerProductoController.php?id=${id}`)
+    fetch(`../controllers/traerProductoController.php?id=${id}`)
         .then(response => response.json())
         .then(data => {
             const inputNombre = document.getElementById('nombre');
             const inputDescripcion = document.getElementById('descripcion');
-            const inputId = document.getElementById('productoId'); // Añadir un campo oculto para almacenar el ID del producto
+            const inputId = document.getElementById('productoId');
 
-            inputNombre.value = data.nombre;
-            inputDescripcion.value = data.descripcion;
-            inputId.value = data.id; // Establecer el valor del campo oculto
-        });
+            if (inputNombre && inputDescripcion && inputId) {
+                inputNombre.value = data.nombre || '';
+                inputDescripcion.value = data.descripcion || '';
+                inputId.value = data.id || '';
+            } else {
+                console.error('Algunos elementos del DOM no existen.');
+            }
+        })
+        .catch(error => console.error('Fetch error:', error));
 }
+
 
 function guardarProducto(id, nombre, descripcion) {
     fetch(
-      `./controllers/guardarProductoController.php?id=${id}&nombre=${nombre}&descripcion=${descripcion}`
+      `../controllers/guardarProductoController.php?id=${id}&nombre=${nombre}&descripcion=${descripcion}`
     )
       .then((response) => response.text())
       .then((data) => {
